@@ -1,21 +1,27 @@
 import ImageCard from "./ImageCard";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-const ImageGallery = ({ images, isLoading, error }) => {
+import css from "./ImageGallery.module.css";
+
+const ImageGallery = ({ images, isLoading, error, onImageClick }) => {
   if (error) {
     return <ErrorMessage message={error} />;
   }
+
   return (
     <>
-      {images && images.length > 0 && (
-        <ul>
-          {images.map(({ id, src, alt }) => (
-            <li key={id}>
-              <ImageCard src={src} alt={alt} />
+      <ul className={css.gallery}>
+        {images &&
+          images.map(({ id, srcSmall, srcRegular, alt }) => (
+            <li
+              key={id}
+              className={css.galleryItem}
+              onClick={() => onImageClick({ src: srcRegular, alt })}
+            >
+              <ImageCard src={srcSmall} alt={alt} />
             </li>
           ))}
-        </ul>
-      )}
+      </ul>
       {isLoading && <Loader />}
     </>
   );
